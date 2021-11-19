@@ -6,6 +6,7 @@ The members of the team are:
 - Humaira Baig
 - Riya Chawla
 - Koizumi Do-oma
+- Hawra Al Alsaba
 *Add any further information about the team here, such as absent team members.*
 
 ## Project structure
