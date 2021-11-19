@@ -2,7 +2,7 @@
 
 ## Team members
 The members of the team are:
-- *Enter member 1*
+- Immanuel Rajadurai 
 - *Enter member 2*
 - *Enter member 3*
 - *Enter member 4*
