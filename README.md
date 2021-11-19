@@ -3,7 +3,7 @@
 ## Team members
 The members of the team are:
 - Immanuel Rajadurai 
-- *Enter member 2*
+- Humaira Baig
 - *Enter member 3*
 - *Enter member 4*
 *Add any further information about the team here, such as absent team members.*
