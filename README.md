@@ -4,7 +4,7 @@
 The members of the team are:
 - Immanuel Rajadurai 
 - Humaira Baig
-- *Enter member 3*
+- Riya Chawla
 - *Enter member 4*
 *Add any further information about the team here, such as absent team members.*
 
