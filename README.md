@@ -5,7 +5,7 @@ The members of the team are:
 - Immanuel Rajadurai 
 - Humaira Baig
 - Riya Chawla
-- *Enter member 4*
+- Koizumi Do-oma
 *Add any further information about the team here, such as absent team members.*
 
 ## Project structure
