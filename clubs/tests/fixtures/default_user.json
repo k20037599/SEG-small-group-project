@@ -1,0 +1,17 @@
+[
+  {
+    "model" : "clubs.user",
+    "pk" : 1,
+    "fields" :{
+      "username" : "johndoe1",
+      "first_name": "John",
+      "last_name" : "Doe",
+      "email" : "johndoe@example.org",
+      "experience_level" : "BEGINNER",
+      "personal_statement": "I am a beginner level chess player",
+      "bio" : "Hello I am John",
+      "password" : "pbkdf2_sha256$260000$XecEyBy0nt5Y0zCGstqCkO$FuSu6NTayX/41L9O2HXPKQXRKgHmgKthfV3h8WEOaag=",
+      "is_active": true
+    }
+  }
+]
