@@ -37,26 +37,29 @@
  * Cover page
  */
 h1.cover-heading {
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 p.cover-text {
   font-size: 1.7rem;
 }
 
+.btn{
+  background-color: #01304c;
+}
+
 .cover-card {
   background-color: rgba(245, 245, 245, 0.6);
-  max-width: 30rem;
+  max-width: 35rem;
   padding-top: 30px;
   padding-left: 50px;
   padding-right: 50px;
   padding-bottom: 30px;
-  border-radius: 15%;
+  border-radius: 8%;
 }
 .cover-card-block {
   opacity: 1
 }
-
 
 /*
  * forms
@@ -136,11 +139,10 @@ h3.profile-title {
   color: #0d6efd;
 }
 
-.post-author a {
-  text-decoration: none;
-  color: black;
-}
-.post-author a:hover {
-  text-decoration: underline;
-  color: black;
+/*
+ * navbar
+ */
+
+nav.navbar{
+  background-color: #01304c;
 }
