@@ -79,10 +79,11 @@ class User(AbstractUser):
             message="Email must begin with a username followed by an @ then by a domain name then by a . and domain e.g. .com"
         )]
     )
+
     ##had to change this to strings as it wasnt working with numbers
     experience_level_choices = (
         ('BEGINNER', 'Beginner'),
-        ('INTERMMEDIATE', 'Intermmediate'),
+        ('INTERMEDIATE', 'Intermediate'),
         ('ADVANCED', 'Advanced'),
     )
 
@@ -92,7 +93,14 @@ class User(AbstractUser):
 
     bio = models.CharField(max_length=300, blank=True)
 
-    user_type = ('Applicant')
+    user_type_choices = (
+        ('APPLICANT', 'Applicant'),
+        ('MEMBER', 'Member'),
+        ('OFFICER', 'Officer'),
+        ('OWNER', 'Owner'),
+    )
+
+    user_type = models.CharField(max_length=20, choices=user_type_choices, default='MEMBER')
 
     ##needed if we make the username=email
     #objects = UserManager()
