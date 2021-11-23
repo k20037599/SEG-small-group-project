@@ -6,21 +6,23 @@ from clubs.models import User
 from django.contrib.auth.hashers import check_password
 #from clubs.tests.helpers import LoginTester
 
+
 class SignUpViewTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json']
+
     def setUp(self):
         self.url = reverse('sign_up')
 
         self.form_input = {
             'first_name': 'Jane',
             'last_name': 'Doe',
-            'username':'janedoe1',
-            'password':'Password123',
-            'password_confirm':'Password123',
-            'experience_level':'BEGINNER',
-            'email':'janedoe@example.com',
-            'personal_statement':'I am a beginner level chess player',
-            'bio':'hi i am jane'
+            'username': 'janedoe1',
+            'password': 'Password123',
+            'password_confirm': 'Password123',
+            'experience_level': 'BEGINNER',
+            'email': 'janedoe@example.com',
+            'personal_statement': 'I am a beginner level chess player',
+            'bio': 'hi i am jane'
         }
 
         self.test_user = User.objects.get(username='johndoe1')
@@ -35,7 +37,7 @@ class SignUpViewTestCase(TestCase):
 
         self.assertTemplateUsed(response, "sign_up.html")
 
-        form = response.context['form'];
+        form = response.context['form']
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertFalse(form.is_bound)
 
@@ -54,6 +56,7 @@ class SignUpViewTestCase(TestCase):
     #     form = response.context['form'];
     #     self.assertTrue(isinstance(form, SignUpForm))
     #     self.assertTrue(form.is_bound)
+    #     self.assertFalse(self._is_logged_in())
     #
     #     self.assertFalse(self._is_logged_in())
     #
@@ -75,6 +78,7 @@ class SignUpViewTestCase(TestCase):
     #
     #     is_pass_correct = check_password('Password123', user.password)
     #     self.assertTrue(is_pass_correct)
+    #     self.assertTrue(self._is_logged_in())
     #
     #     self.assertTrue(self._is_logged_in())
 

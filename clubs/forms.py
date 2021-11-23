@@ -2,28 +2,36 @@ from django import forms
 from .models import User
 from django.core.validators import RegexValidator
 
+
+class LogInForm(forms.Form):
+    username = forms.CharField(label="Username")
+    password = forms.CharField(label="Password", widget=forms.PasswordInput())
+
+
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
 
-        fields = ['username', 'first_name', 'last_name', 'email', 'experience_level', 'personal_statement', 'bio',]
+        fields = ['username', 'first_name', 'last_name', 'email',
+                  'experience_level', 'personal_statement', 'bio', ]
 
         widgets = {
-            'personal_statement':forms.Textarea(),
-            'bio':forms.Textarea(),
-            'experience_level':forms.Select(choices=User.experience_level_choices)
-            }
+            'personal_statement': forms.Textarea(),
+            'bio': forms.Textarea(),
+            'experience_level': forms.Select(choices=User.experience_level_choices)
+        }
 
     password = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(),
         max_length=50,
         validators=[
-        RegexValidator(
-            regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$' ,
-            message="Password must contain at least one uppercase and number.")])
+            RegexValidator(
+                regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
+                message="Password must contain at least one uppercase and number.")])
 
-    password_confirm = forms.CharField(label="Password Confirm", widget=forms.PasswordInput(), max_length=50)
+    password_confirm = forms.CharField(
+        label="Password Confirm", widget=forms.PasswordInput(), max_length=50)
 
     def clean(self):
         super().clean()
@@ -44,6 +52,6 @@ class SignUpForm(forms.ModelForm):
             personal_statement=self.cleaned_data.get('personal_statement'),
             bio=self.cleaned_data.get('bio'),
             password=self.cleaned_data.get('password')
-            )
+        )
 
         return user
