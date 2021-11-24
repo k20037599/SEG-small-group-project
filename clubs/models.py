@@ -93,14 +93,8 @@ class User(AbstractUser):
 
     bio = models.CharField(max_length=300, blank=True)
 
-    user_type_choices = (
-        ('APPLICANT', 'Applicant'),
-        ('MEMBER', 'Member'),
-        ('OFFICER', 'Officer'),
-        ('OWNER', 'Owner'),
-    )
 
-    user_type = models.CharField(max_length=20, choices=user_type_choices, default='MEMBER')
+    user_type = 'APPLICANT'
 
     ##needed if we make the username=email
     #objects = UserManager()
