@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
-from .forms import LogInForm, SignUpForm
+from .forms import LogInForm, SignUpForm, UserForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import User
@@ -16,8 +16,20 @@ def home(request):
     return render(request, 'home.html')
 
 def feed(request):
-    return render(request, 'feed.html')
+    current_user = request.user
+    return render(request, 'applicant_feed.html')
 
+def profile(request):
+    current_user = request.user
+    if (request.method == 'POST'):
+        form = UserForm(instance=current_user, data=request.POST)
+        if form.is_valid():
+            messages.add_message(request, messages.SUCCESS, "Profile Successfully updated!")
+            form.save()
+            return redirect('/feed')
+    else:
+        form = UserForm(instance=current_user)
+    return render(request, 'profile.html', {'form': form})
 
 @login_prohibited
 def sign_up(request):

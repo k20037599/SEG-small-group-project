@@ -1,0 +1,19 @@
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="row content">
+  <div class="col-12-xs-12 col-lg-6 col-xl-4">
+    <img src="{{ user.gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle profile-image" >
+    <div class="profile-text">
+      <h3 class="profile-username">{{user.first_name}} {{user.last_name}}</h3>
+      <p class="profile-username">User Name: {{ user.username }}</p>
+    </div>
+  </div>
+</div>
+<div class="row content">
+  <div class="col-12">
+      <p class="profile-bio">Bio: {{user.bio }}</p>
+      <p> Application Status: In Progress</p>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -7,6 +7,16 @@ class LogInForm(forms.Form):
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
+class UserForm(forms.ModelForm):
+    """This Form Updates the users profile"""
+
+    class Meta:
+        model = User
+        fields = ['username','first_name', 'last_name', 'email', 'personal_statement', 'experience_level', 'bio']
+        widgets = {'personal_statement' : forms.Textarea(),
+                    'bio' : forms.Textarea(),
+                    'experience_level': forms.Select(choices=User.experience_level_choices)}
+
 
 class SignUpForm(forms.ModelForm):
     class Meta:
