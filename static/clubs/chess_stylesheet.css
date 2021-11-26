@@ -91,41 +91,38 @@ ul.errorlist {
 /*
  * Profile
  */
-.profile-image {
-  width: 120px;
-  clear:both;
-  float:left;
-}
-
-.profile-text {
-  overflow:hidden;
-  padding-left:20px
-}
 
 h3.profile-title {
   margin-bottom: 0px;
-}
-
-.profile-username {
-  color: #777777;
-  font-weight: 300;
-  font-style: italic;
 }
 
 .profile-bio {
   font-size: 1.1rem;
 }
 
-.profile-statistics {
-  color: #777777;
-  font-weight: 300;
-  display: block;
+.profile-picture{
+  display: flex;
+  justify-content: center;
 }
 
-.profile-statistics-item {
-  display: block;
-  padding-right: 50px;
+.profile-text {
+  color: #777777;
+  font-weight: 300;
+  overflow:hidden;
+  padding-left:20px;
+  text-align:center;
 }
+
+.profile-name{
+  font-style: italic;
+}
+
+.profile-row-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 
 /*
  * Hyperlinks

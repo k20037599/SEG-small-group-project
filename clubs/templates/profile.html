@@ -1,0 +1,23 @@
+{% extends 'base_content.html' %}
+{% block content %}
+<div class="profile-row-content">
+  <div class="col-12">
+    <div class="profile-picture">
+      <img src="{{ user.gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle profile-image">
+    </div>
+    <div class="profile-text">
+      <h3 class="profile-name">{{user.first_name}} {{user.last_name}}</h3>
+      <p class="profile-username">Username: {{ user.username }}</p>
+      {% if user.user_type == "OFFICER" %}
+        <p class="profile-email">Emal: {{ user.email }}</p>
+        <p class="profile-personal-statement">Personal Statement: {{ user.personal_statement }}</p>
+        <p class="profile-experience-level">Experience Level: {{ user.experience_level }}</p>
+      {% endif %}
+      <p class="profile-bio">Bio: {{user.bio }}</p>
+      {% if user.user_type == "APPLICANT" %}
+        <p> Application Status: In Progress</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
