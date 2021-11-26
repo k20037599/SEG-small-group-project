@@ -30,7 +30,8 @@ class Command(BaseCommand):
                 bio = self.faker.word(),
                 personal_statement = self.faker.word(),
                 experience_level = self.faker.word(ext_word_list=self.experience_levels),
-                user_type = 'MEMBER'
+                user_type = 'MEMBER',
+                password = 'Password123'
             )
         for i in range(40): # creates 40 applicants
             User.objects.create_user(
@@ -41,7 +42,8 @@ class Command(BaseCommand):
                 bio = self.faker.word(),
                 personal_statement = self.faker.word(),
                 experience_level = self.faker.word(ext_word_list=self.experience_levels),
-                user_type = 'APPLICANT'
+                user_type = 'APPLICANT',
+                password = 'Password123'
             )
         for i in range(20): # creates 20 officers
             User.objects.create_user(
@@ -52,17 +54,45 @@ class Command(BaseCommand):
                 bio = self.faker.word(),
                 personal_statement = self.faker.word(),
                 experience_level = self.faker.word(ext_word_list=self.experience_levels),
-                user_type = 'OFFICER'
+                user_type = 'OFFICER',
+                password = 'Password123'
             )
 
         # creates 1 owner
+
+        # creates the users specified in the requirements
         User.objects.create_user(
-            username = self.faker.unique.user_name(),
-            first_name = self.faker.first_name(),
-            last_name = self.faker.last_name(),
-            email = self.faker.unique.safe_email(),
+            username = 'jebKerman',
+            first_name = 'Jebediah',
+            last_name = 'Kerman',
+            email = 'jeb@example.org',
             bio = self.faker.word(),
             personal_statement = self.faker.word(),
-            experience_level = self.faker.word(ext_word_list=self.experience_levels),
-            user_type = 'OWNER'
+            experience_level = 'ADVANCED',
+            user_type = 'MEMBER',
+            password = 'Password123'
+        )
+
+        User.objects.create_user(
+            username = 'valKerman',
+            first_name = 'Valentina',
+            last_name = 'Kerman',
+            email = 'val@example.org',
+            bio = self.faker.word(),
+            personal_statement = self.faker.word(),
+            experience_level = 'ADVANCED',
+            user_type = 'OFFICER',
+            password = 'Password123'
+        )
+
+        User.objects.create_user(
+            username = 'bilKerman',
+            first_name = 'Billie',
+            last_name = 'Kerman',
+            email = 'billie@example.org',
+            bio = self.faker.word(),
+            personal_statement = self.faker.word(),
+            experience_level = 'ADVANCED',
+            user_type = 'OWNER',
+            password = 'Password123'
         )
