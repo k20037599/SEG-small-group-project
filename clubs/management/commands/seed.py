@@ -7,18 +7,17 @@ class Command(BaseCommand):
         super().__init__()
         self.faker = Faker('en_GB')
 
-        self.user_types = [
-            'APPLICANT',
-            'MEMBER',
-            'OFFICER',
-            'OWNER'
-        ]
-
         self.experience_levels = [
             'BEGINNER',
             'INTERMEDIATE',
             'ADVANCED'
         ]
+
+        # List of existing user types:
+        #   -APPLICANT
+        #   -MEMBER
+        #   -OFFICER
+        #   -OWNER
 
     def handle(self, *args, **options):
         for i in range(200): # creates 200 Members
