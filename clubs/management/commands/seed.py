@@ -20,7 +20,8 @@ class Command(BaseCommand):
         #   -OWNER
 
     def handle(self, *args, **options):
-        for i in range(200): # creates 200 Members
+        # creates 200 Members
+        for i in range(200):
             User.objects.create_user(
                 username = self.faker.unique.user_name(),
                 first_name = self.faker.first_name(),
@@ -32,7 +33,8 @@ class Command(BaseCommand):
                 user_type = 'MEMBER',
                 password = 'Password123'
             )
-        for i in range(40): # creates 40 applicants
+        # creates 40 applicants
+        for i in range(40):
             User.objects.create_user(
                 username = self.faker.unique.user_name(),
                 first_name = self.faker.first_name(),
@@ -44,7 +46,8 @@ class Command(BaseCommand):
                 user_type = 'APPLICANT',
                 password = 'Password123'
             )
-        for i in range(20): # creates 20 officers
+        # creates 20 officers
+        for i in range(20):
             User.objects.create_user(
                 username = self.faker.unique.user_name(),
                 first_name = self.faker.first_name(),
@@ -56,8 +59,6 @@ class Command(BaseCommand):
                 user_type = 'OFFICER',
                 password = 'Password123'
             )
-
-        # creates 1 owner
 
         # creates the users specified in the requirements
         User.objects.create_user(
