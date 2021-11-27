@@ -9,8 +9,6 @@ from django.template import Template, Context
 from .helpers import login_prohibited
 from django.contrib.auth import authenticate, login, logout
 
-
-
 @login_prohibited
 def home(request):
     return render(request, 'home.html')
@@ -44,7 +42,7 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
-
+@login_prohibited
 def log_in(request):
     if request.method == 'POST':
         form = LogInForm(request.POST)
