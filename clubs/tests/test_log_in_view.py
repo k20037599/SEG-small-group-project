@@ -3,22 +3,16 @@ from django.test import TestCase
 from django.urls import reverse
 from clubs.forms import LogInForm
 from clubs.models import User
-from clubs.helpers import LogInTester
+from clubs.tests.helpers import LogInTester, reverse_with_next
 from django.contrib import messages
 
 
 class LogInViewTestCase(TestCase, LogInTester):
-
+    fixtures = ['clubs/tests/fixtures/default_user.json']
     def setUp(self):
         self.url = reverse('log_in')
-        self.user = User.objects.create_user('@johndoe',
-                                             first_name='John',
-                                             last_name='Doe',
-                                             email='johndoe@example.org',
-                                             bio='Hello, I am John Doe.',
-                                             password='Password123',
-                                             is_active=True,
-                                             )
+        self.user = User.objects.get(username='johndoe1')
+        self.form_input = {'username': 'johndoe1', 'password': 'Password123'}
 
     def test_log_in_url(self):
         self.assertEqual(self.url, '/log_in/')
@@ -47,8 +41,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_succesful_log_in(self):
-        form_input = {'username': '@johndoe', 'password': 'Password123'}
-        response = self.client.post(self.url, form_input, follow=True)
+        response = self.client.post(self.url, self.form_input, follow=True)
         self.assertTrue(self._is_logged_in())
         response_url = reverse('profile')
         self.assertRedirects(response, response_url,
@@ -57,14 +50,68 @@ class LogInViewTestCase(TestCase, LogInTester):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
 
-    def _is_logged_in(self):
-        return '_auth_user_id' in self.client.session.keys()
+    def test_get_log_in_with_redirect(self):
+        dest_url = reverse('profile')
+        self.url = reverse_with_next('log_in', dest_url)
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTemplateUsed(response, "log_in.html")
+
+        form = response.context['form']
+        next = response.context['next']
+        self.assertTrue(isinstance(form, LogInForm))
+        self.assertFalse(form.is_bound)
+
+        self.assertEqual(next, dest_url)
+
+        messages_list = list(response.context['messages'])
+
+        self.assertEqual(len(messages_list), 0)
+
+    def test_get_log_in_redirects_when_logged_in(self):
+        self.client.login(username=self.user.username, password="Password123")
+        response = self.client.get(self.url, follow=True)
+        redirect_url = reverse('profile')
+
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "profile.html")
+
+    def test_successful_login_with_redirect(self):
+        redirect_url = reverse('profile')
+        form_input = {'username': 'johndoe1', 'password': 'Password123', 'next':redirect_url}
+        response = self.client.post(self.url, form_input, follow=True)
+        self.assertTrue(self._is_logged_in())
+
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "profile.html")
+
+        messages_list = list(response.context['messages'])
+
+        self.assertEqual(len(messages_list), 0)
+
+    def test_post_get_login_redirects_when_logged_in(self):
+        self.client.login(username=self.user.username, password="Password123")
+        form_input = {'username':"wronguser", 'password':"wrongpass"}
+        response = self.client.get(self.url, form_input, follow=True)
+        redirect_url = reverse('profile')
+
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "profile.html")
+
+    def test_post_log_in_with_incorrect_credentials_and_redirect(self):
+        redirect_url = reverse('profile')
+        form_input = { 'username': 'johndoe1', 'password': 'WrongPassword123', 'next': redirect_url }
+        response = self.client.post(self.url, form_input)
+        next = response.context['next']
+
+        self.assertEqual(next, redirect_url)
 
     def test_valid_log_in_by_inactive_user(self):
         self.user.is_active = False
         self.user.save()
-        form_input = {'username': '@johndoe', 'password': 'Password123'}
-        response = self.client.post(self.url, form_input, follow=True)
+        response = self.client.post(self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'log_in.html')
         form = response.context['form']
