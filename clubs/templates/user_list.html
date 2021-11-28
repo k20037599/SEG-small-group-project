@@ -10,7 +10,7 @@
         </td>
         <td>
           <td>{{ u.full_name }}</td>
-          <td><a href="#">{{ u.username }}</a></td>
+          <td><a href="{% url 'show_user' u.id %}">{{ u.username }}</a></td>
       </tr>
       {% endif %}
     {% endfor %}

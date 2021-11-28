@@ -19,26 +19,28 @@ def view_applications(request):
     current_user = request.user
     if current_user.user_type == "OFFICER":
         users = User.objects.all().filter(user_type="APPLICANT")
-        return user_list(request, users, True)
+        return user_list(request, users)
     return redirect('/profile')
 
 @login_required
-def user_list(request, users, all_info):
-    return render(request, 'user_list.html', {'users': users, 'all_info': all_info})
+def user_list(request, users):
+    return render(request, 'user_list.html', {'users': users})
 
 @login_required
 def show_user(request, user_id):
+    current_user = request.user
+    all_info = False
     try:
-        context = User.objects.get(id=user_id)
-        posts = Post.objects.filter(author=context)
+        user = User.objects.get(id=user_id)
+        if user.user_type == "APPLICANT" and current_user.user_type == "OFFICER":
+            all_info = True
     except User.DoesNotExist:
-        return redirect('users')
-
-    return render(request, 'show_user.html', {'user': context, 'posts':posts, 'following':following, 'followable':followable})
+        return redirect('profile')
+    return render(request, 'profile.html', {'user': user, 'all_info': all_info})
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    return render(request, 'profile.html', {'user': request.user, 'all_info': False})
 
 @login_required
 def edit_profile(request):

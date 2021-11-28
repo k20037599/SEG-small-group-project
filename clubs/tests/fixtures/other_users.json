@@ -8,10 +8,59 @@
       "last_name" : "Doe",
       "email" : "janedoe@example.org",
       "experience_level" : "BEGINNER",
+      "user_type" : "MEMBER",
       "personal_statement": "I am a beginner level chess player",
       "bio" : "Hello I am Jane",
       "password" : "pbkdf2_sha256$260000$XecEyBy0nt5Y0zCGstqCkO$FuSu6NTayX/41L9O2HXPKQXRKgHmgKthfV3h8WEOaag=",
       "is_active": true
     }
-  }
+  },
+    {
+      "model" : "clubs.user",
+      "pk" : 3,
+      "fields" :{
+        "username" : "bobsmith1",
+        "first_name": "Bob",
+        "last_name" : "Smith",
+        "email" : "bobsmith@example.org",
+        "experience_level" : "INTERMEDIATE",
+        "user_type" : "OFFICER",
+        "personal_statement": "I am an Intermediate level chess player",
+        "bio" : "Hello I am Bob",
+        "password" : "pbkdf2_sha256$260000$XecEyBy0nt5Y0zCGstqCkO$FuSu6NTayX/41L9O2HXPKQXRKgHmgKthfV3h8WEOaag=",
+        "is_active": true
+      }
+    },
+    {
+      "model" : "clubs.user",
+      "pk" : 4,
+      "fields" :{
+        "username" : "billysmith1",
+        "first_name": "Billy",
+        "last_name" : "Smith",
+        "email" : "billysmith@example.org",
+        "experience_level" : "INTERMEDIATE",
+        "user_type" : "MEMBER",
+        "personal_statement": "I am an Intermediate level chess player",
+        "bio" : "Hello I am Billy",
+        "password" : "pbkdf2_sha256$260000$XecEyBy0nt5Y0zCGstqCkO$FuSu6NTayX/41L9O2HXPKQXRKgHmgKthfV3h8WEOaag=",
+        "is_active": true
+      }
+    },
+    {
+      "model" : "clubs.user",
+      "pk" : 5,
+      "fields" :{
+        "username" : "jillbrown1",
+        "first_name": "Jill",
+        "last_name" : "Brown",
+        "email" : "jillbrown@example.org",
+        "experience_level" : "ADVANCED",
+        "user_type" : "OWNER",
+        "personal_statement": "I am an advanced level chess player",
+        "bio" : "Hello I am Jill",
+        "password" : "pbkdf2_sha256$260000$XecEyBy0nt5Y0zCGstqCkO$FuSu6NTayX/41L9O2HXPKQXRKgHmgKthfV3h8WEOaag=",
+        "is_active": true
+      }
+    }
 ]
