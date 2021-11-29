@@ -1,4 +1,5 @@
 from django.urls import reverse
+from clubs.models import User
 
 class LogInTester:
     def _is_logged_in(self):
