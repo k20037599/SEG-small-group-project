@@ -28,4 +28,6 @@ urlpatterns = [
     path('edit_profile/',views.edit_profile,name='edit_profile'),
     path('view_applications/',views.view_applications,name='view_applications'),
     path('view_members/',views.view_members,name='view_members'),
+    path('accept_application/<int:user_id>',views.accept_application,name='accept_application'),
+    path('reject_application/<int:user_id>',views.reject_application,name='reject_application'),
 ]

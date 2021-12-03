@@ -42,15 +42,6 @@ class UserFormTestCase(TestCase):
         self.assertTrue(isinstance(email_field, forms.EmailField))
         self.assertIn('bio', form.fields)
 
-    # def test_valid_user_form(self):
-    #     form = UserForm(data=self.form_input)
-    #     self.assertTrue(form.is_valid())
-    #
-    # def test_form_uses_model_validation(self):
-    #     self.form_input['username'] = 'badusername'
-    #     form = UserForm(data=self.form_input)
-    #     self.assertFalse(form.is_valid())
-
     def test_successful_edit_profile(self):
         self.client.login(username=self.user.username, password='Password123')
         before_count = User.objects.count()
