@@ -69,7 +69,7 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            login(requgit est, user)
             return redirect('/profile')
     else:
         form = SignUpForm()
