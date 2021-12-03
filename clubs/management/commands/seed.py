@@ -44,7 +44,7 @@ class Command(BaseCommand):
                 personal_statement = self.faker.word(),
                 experience_level = self.faker.word(ext_word_list=self.experience_levels),
                 user_type = 'APPLICANT',
-                password = 'Password123'
+                password = 'Password123',
                 application_status = 'PENDING'
             )
         # creates 20 officers
