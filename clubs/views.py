@@ -117,6 +117,42 @@ def log_in(request):
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
 
+def demote_officer(request, user_id):
+    current_user = request.user
+    try:
+        user = User.objects.get(id=user_id)
+        if (user.user_type == "OFFICER") and current_user.user_type == "OWNER":
+            current_user.demote_officer(user)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
+
+def promote_member(request, user_id):
+    current_user = request.user
+    try:
+        user = User.objects.get(id=user_id)
+        if (user.user_type == "MEMBER") and current_user.user_type == "OWNER":
+            current_user.promote_member(user)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
+
+def transfer_ownership(request, user_id):
+    current_user = request.user
+    try:
+        user = User.objects.get(id=user_id)
+        if (user.user_type == "OFFICER") and current_user.user_type == "OWNER":
+            current_user.transfer_ownership(user)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
+
 @login_required
 def log_out(request):
     logout(request)

@@ -31,15 +31,16 @@
         {% if profile_user.user_type == "OFFICER" %}
         <p>
           <div class="d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-primary" type="button">Demote to Member</button>
-            <button class="btn btn-primary" type="button">Transfer Ownership</button>
+            <a class="btn btn-primary" href="{% url 'demote_officer' profile_user.id %}">Demote to Member</a>
+            <a class="btn btn-primary" href="{% url 'transfer_ownership' profile_user.id %}">Transfer Ownership</a>
           </div>
         </p>
         {% endif %}
+
         {% if profile_user.user_type == "MEMBER" %}
         <p>
           <div class="d-grid col-6 mx-auto">
-            <button class="btn btn-primary" type="button">Promote to Officer</button>
+            <a class="btn btn-primary" href="{% url 'promote_member' profile_user.id %}">Promote to Officer</a>
           </div>
         </p>
         {% endif %}

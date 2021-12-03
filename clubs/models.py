@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from django.core.validators import EmailValidator
 #from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-#This is for making the email the username, but wasn't working properly
+# This is for making the email the username, but wasn't working properly
 
 # class UserManager(BaseUserManager):
 #     def create_user(self, first_name, last_name, email, experience_level, personal_statement, bio, password, is_active):
@@ -42,13 +42,14 @@ from django.core.validators import EmailValidator
 #
 #         return user
 
+
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
         unique=True,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^\w{3,}$' ,
+            regex=r'^\w{3,}$',
             message="Username must contain at least 3 letters or numbers"
         )]
     )
@@ -57,7 +58,7 @@ class User(AbstractUser):
         max_length=50,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[a-zA-Z]{3,}$' ,
+            regex=r'^[a-zA-Z]{3,}$',
             message="First name must contain at least 3 letters"
         )]
     )
@@ -66,7 +67,7 @@ class User(AbstractUser):
         max_length=50,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[a-zA-Z]{3,}$' ,
+            regex=r'^[a-zA-Z]{3,}$',
             message="Last name must contain at least 3 letters"
         )]
     )
@@ -80,14 +81,15 @@ class User(AbstractUser):
         )]
     )
 
-    ##had to change this to strings as it wasnt working with numbers
+    # had to change this to strings as it wasnt working with numbers
     experience_level_choices = (
         ('BEGINNER', 'Beginner'),
         ('INTERMEDIATE', 'Intermediate'),
         ('ADVANCED', 'Advanced'),
     )
 
-    experience_level = models.CharField(max_length=20, choices=experience_level_choices, default='BEGINNER')
+    experience_level = models.CharField(
+        max_length=20, choices=experience_level_choices, default='BEGINNER')
 
     personal_statement = models.CharField(max_length=500, blank=True)
 
@@ -95,7 +97,7 @@ class User(AbstractUser):
 
     user_type = models.CharField(max_length=20, default='APPLICANT')
 
-    ##needed if we make the username=email
+    # needed if we make the username=email
     #objects = UserManager()
     #USERNAME_FIELD = 'email'
 
@@ -108,3 +110,17 @@ class User(AbstractUser):
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
+
+    def demote_officer(self, user):
+        user.user_type = 'MEMBER'
+        user.save()
+
+    def promote_member(self, user):
+        user.user_type = 'OFFICER'
+        user.save()
+
+    def transfer_ownership(self, user):
+        user.user_type = 'OWNER'
+        user.save()
+        self.user_type = 'OFFICER'
+        self.save()

@@ -29,4 +29,10 @@ urlpatterns = [
     path('view_applications/', views.view_applications, name='view_applications'),
     path('view_members/', views.view_members, name='view_members'),
     path('view_officers/', views.view_officers, name='view_officers'),
+    path('demote_officer/<int:user_id>',
+         views.demote_officer, name='demote_officer'),
+    path('promote_member/<int:user_id>',
+         views.promote_member, name='promote_member'),
+    path('transfer_ownership/<int:user_id>', views.transfer_ownership,
+         name='transfer_ownership'),
 ]
