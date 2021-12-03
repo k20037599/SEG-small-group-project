@@ -44,11 +44,12 @@ def show_user(request, user_id):
             all_info = True
     except User.DoesNotExist:
         return redirect('profile')
-    return render(request, 'profile.html', {'profile_user': user, 'all_info': all_info})
+    return render(request, 'profile.html', {'profile_user': user, 'all_info': all_info, 'application_status':current_user.application_status})
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html', {'profile_user': request.user, 'all_info': False})
+    application_status = request.user.application_status
+    return render(request, 'profile.html', {'profile_user': request.user, 'all_info': False, 'application_status': application_status})
 
 @login_required
 def edit_profile(request):
@@ -94,6 +95,29 @@ def log_in(request):
     if request.method == 'GET':
          next = request.GET.get('next') or ''
     return render(request, 'log_in.html', {'form': form, 'next':next})
+
+def accept_application(request, user_id):
+    current_user = request.user
+    try:
+        applicant = User.objects.get(id=user_id)
+        if (applicant.user_type == "APPLICANT" ) and current_user.user_type == "OFFICER":
+            current_user.accept_application(applicant)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
+
+def reject_application(request, user_id):
+    current_user = request.user
+    try:
+        applicant = User.objects.get(id=user_id)
+        if (applicant.user_type == "APPLICANT" ) and current_user.user_type == "OFFICER":
+            current_user.reject_application(applicant)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
 
 @login_required
 def log_out(request):

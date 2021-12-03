@@ -14,8 +14,14 @@
         <p class="profile-experience-level">Experience Level: {{ profile_user.experience_level }}</p>
       {% endif %}
       <p class="profile-bio">Bio: {{profile_user.bio }}</p>
-      {% if user.user_type == "APPLICANT" %}
-        <p> Application Status: In Progress</p>
+      {% if profile_user.user_type == "APPLICANT" %}
+        <p> Application Status: {{ profile_user.application_status }}</p>
+      {% endif %}
+      <p class="profile-user-type">{{ profile_user.user_type }}</p>
+
+      {% if user.user_type == "OFFICER" and profile_user.user_type == "APPLICANT" and profile_user.application_status != "REJECTED" %}
+        <a class="btn btn-secondary" href="{% url 'accept_application' profile_user.id %}">Accept application</a>
+        <a class="btn btn-secondary" href="{% url 'reject_application' profile_user.id %}">Reject application</a>
       {% endif %}
     </div>
   </div>
