@@ -16,6 +16,30 @@ class UserForm(forms.ModelForm):
                     'bio' : forms.Textarea(),
                     'experience_level': forms.Select(choices=User.experience_level_choices)}
 
+class PasswordForm(forms.Form):
+    """This form updates the Users Password"""
+
+    password = forms.CharField(label='Current Password', widget=forms.PasswordInput())
+    new_password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(),
+        max_length=50,
+        validators=[
+            RegexValidator(
+                regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
+                message="Password must contain at least one uppercase and number."
+                )]
+    )
+
+    password_confirm = forms.CharField(label='Confirm Password', widget=forms.PasswordInput())
+
+    def clean(self):
+        super().clean()
+        new_password = self.cleaned_data.get('new_password')
+        password_confirm = self.cleaned_data.get('password_confirm')
+
+        if new_password != password_confirm:
+            self.add_error('password_confirm', 'Please ensure you entered matching Password Confirmation')
 
 class SignUpForm(forms.ModelForm):
     class Meta:

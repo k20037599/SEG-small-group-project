@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
-from .forms import LogInForm, SignUpForm, UserForm
+from .forms import LogInForm, SignUpForm, UserForm, PasswordForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import User
@@ -63,6 +63,26 @@ def edit_profile(request):
     else:
         form = UserForm(instance=current_user)
     return render(request, 'edit_profile.html', {'form': form})
+
+@login_required
+def password(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = PasswordForm(data=request.POST)
+        if form.is_valid():
+            password = form.cleaned_data.get('password')
+            if check_password(password, current_user.password):
+                new_password = form.cleaned_data.get('new_password')
+                current_user.set_password(new_password)
+                current_user.save()
+                login(request, current_user)
+                messages.add_message(request, messages.SUCCESS, "Password Updated Successfully")
+                return redirect('/profile')
+
+    form = PasswordForm()
+    return render(request, 'password.html', {'form':form})
+
+
 
 @login_prohibited
 def sign_up(request):
