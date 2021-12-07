@@ -96,6 +96,7 @@ def log_in(request):
          next = request.GET.get('next') or ''
     return render(request, 'log_in.html', {'form': form, 'next':next})
 
+@login_required
 def accept_application(request, user_id):
     current_user = request.user
     try:
@@ -107,7 +108,7 @@ def accept_application(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
-
+@login_required
 def reject_application(request, user_id):
     current_user = request.user
     try:
