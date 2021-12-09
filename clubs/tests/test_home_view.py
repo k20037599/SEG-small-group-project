@@ -9,9 +9,16 @@ class SignUpViewTestCase(TestCase):
 
         self.test_user = User.objects.get(username='johndoe1')
 
+    """
+    Test whether the url is of the home url
+    """
     def test_home_url(self):
         self.assertEqual(self.url, '/')
 
+    """
+    Tests whether calling a get on Home would return a 200 OK
+    response and that the template used is "home.html"
+    """
     def test_get_home(self):
         response = self.client.get(self.url)
 

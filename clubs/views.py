@@ -10,10 +10,17 @@ from .helpers import login_prohibited
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist, ImproperlyConfigured
 
+"""
+The home view that renders the home page
+"""
 @login_prohibited
 def home(request):
     return render(request, 'home.html')
 
+"""
+If the current user is an officer
+then the officer can view a list of submitted applications
+"""
 @login_required
 def view_applications(request):
     current_user = request.user
@@ -22,6 +29,10 @@ def view_applications(request):
         return user_list(request, users)
     return redirect('/profile')
 
+"""
+If the current user is an officer
+Then the officer can view a list of members
+"""
 @login_required
 def view_members(request):
     current_user = request.user
@@ -30,10 +41,16 @@ def view_members(request):
         return user_list(request, users)
     return redirect('/profile')
 
+"""
+A view containing a list of all users of the system
+"""
 @login_required
 def user_list(request, users):
     return render(request, 'user_list.html', {'users': users})
 
+"""
+Responsible for displaying a particular user based on user_id
+"""
 @login_required
 def show_user(request, user_id):
     current_user = request.user
@@ -46,11 +63,19 @@ def show_user(request, user_id):
         return redirect('profile')
     return render(request, 'profile.html', {'profile_user': user, 'all_info': all_info, 'application_status':current_user.application_status})
 
+"""
+Renders all the information of the request user's profile
+"""
 @login_required
 def profile(request):
     application_status = request.user.application_status
     return render(request, 'profile.html', {'profile_user': request.user, 'all_info': False, 'application_status': application_status})
 
+"""
+A view to edit the current users profile
+Contains a user form, and if the form data is valid then the form can be saved
+and a success massage is displayed, the user is redirected to profile
+"""
 @login_required
 def edit_profile(request):
     current_user = request.user
@@ -64,6 +89,10 @@ def edit_profile(request):
         form = UserForm(instance=current_user)
     return render(request, 'edit_profile.html', {'form': form})
 
+"""
+Creates a sign up form and if the entered info is valid
+then save the form and redirect to the users profile
+"""
 @login_prohibited
 def sign_up(request):
     if request.method == 'POST':
@@ -76,6 +105,12 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+"""
+Logs the user in by taking input from the log in form
+If the form is valid then authenticate the user and redirect them
+to their profile.
+If the form is invalid then display error message
+"""
 @login_prohibited
 def log_in(request):
     if request.method == 'POST':
@@ -96,6 +131,12 @@ def log_in(request):
          next = request.GET.get('next') or ''
     return render(request, 'log_in.html', {'form': form, 'next':next})
 
+"""
+Finds the applicant based on user_id
+If the current User is an officer then call accept_application
+function and pass in the applicant. Then display the accepted user
+If the user does not exist then redirect to the users profile
+"""
 def accept_application(request, user_id):
     current_user = request.user
     try:
@@ -107,7 +148,12 @@ def accept_application(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
-
+"""
+Finds the applicant based on user_id
+If the current User is an officer then call reject_application
+function and pass in the applicant. Then display the rejected user
+If the user does not exist then redirect to the users profile
+"""
 def reject_application(request, user_id):
     current_user = request.user
     try:
@@ -119,6 +165,9 @@ def reject_application(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
+"""
+Logs out and redirects to home page
+"""
 @login_required
 def log_out(request):
     logout(request)

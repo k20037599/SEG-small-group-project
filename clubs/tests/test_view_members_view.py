@@ -7,13 +7,26 @@ from clubs.tests.helpers import reverse_with_next
 
 class ViewMembersViewTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json', 'clubs/tests/fixtures/other_users.json']
+
+    """
+    Gets the view_members url
+    and retrieves a valid officer
+    """
     def setUp(self):
         self.url = reverse('view_members')
         self.officer = User.objects.get(username='bobsmith1')
 
+    """
+     Ensures that view_members url is correct
+    """
     def test_view_members_url(self):
         self.assertEqual(self.url, '/view_members/')
 
+    """
+    Ensures that a list of members is generated with
+    correct information and that officers can view
+    members easily
+    """
     def test_get_view_members_by_officer(self):
         self.client.login(username=self.officer.username, password='Password123')
         self._create_test_members(15-2)
@@ -27,11 +40,15 @@ class ViewMembersViewTestCase(TestCase):
             user_url = reverse('show_user', kwargs={'user_id': user.id})
             self.assertContains(response, user_url)
 
+
     def test_get_view_members_redirects_when_not_logged_in(self):
         response = self.client.get(self.url)
         redirect_url = reverse_with_next('log_in', self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    """
+    Creates 10 members for testing
+    """
     def _create_test_members(self, user_count=10):
         for user_id in range(user_count):
             User.objects.create_user(

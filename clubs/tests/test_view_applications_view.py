@@ -7,13 +7,25 @@ from clubs.tests.helpers import reverse_with_next
 
 class ViewApplicationsViewTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json', 'clubs/tests/fixtures/other_users.json']
+
+    """
+    Gets the view_applications url
+    and retrieves a valid officer
+    """
     def setUp(self):
         self.url = reverse('view_applications')
         self.officer = User.objects.get(username='bobsmith1')
 
+    """
+    Tests that view_applications url is correct
+    """
     def test_view_applications_url(self):
         self.assertEqual(self.url, '/view_applications/')
 
+    """
+    creates a list of applications and tests to ensure
+    that each application contains relevant information
+    """
     def test_get_view_applications(self):
         self.client.login(username=self.officer.username, password='Password123')
         self._create_test_applicants(15-1)
@@ -27,11 +39,15 @@ class ViewApplicationsViewTestCase(TestCase):
             user_url = reverse('show_user', kwargs={'user_id': user.id})
             self.assertContains(response, user_url)
 
+
     def test_get_view_applications_redirects_when_not_logged_in(self):
         response = self.client.get(self.url)
         redirect_url = reverse_with_next('log_in', self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    """
+    creates 10 test applicants
+    """
     def _create_test_applicants(self, user_count=10):
         for user_id in range(user_count):
             User.objects.create_user(

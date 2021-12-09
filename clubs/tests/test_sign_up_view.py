@@ -10,6 +10,10 @@ from django.contrib.auth.hashers import check_password
 class SignUpViewTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json']
 
+    """
+    Gets the sign up url
+    and generates a valid form input
+    """
     def setUp(self):
         self.url = reverse('sign_up')
 
@@ -27,9 +31,15 @@ class SignUpViewTestCase(TestCase):
 
         self.test_user = User.objects.get(username='johndoe1')
 
+    """
+    Tests whether the sign up url is correct
+    """
     def test_sign_up_url(self):
         self.assertEqual(self.url, '/sign_up/')
 
+    """
+    Tests whether a GET on the sign up view is OK(200)
+    """
     def test_get_sign_up(self):
         response = self.client.get(self.url)
 

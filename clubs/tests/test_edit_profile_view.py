@@ -13,7 +13,10 @@ class EditProfileViewTest(TestCase):
         'clubs/tests/fixtures/default_user.json',
         'clubs/tests/fixtures/other_users.json'
     ]
-
+    """
+    Auxillary set up method which gets user: janedoe1
+    and fills a form_input with valid data
+    """
     def setUp(self):
         self.url = reverse('edit_profile')
         self.user = User.objects.get(username='janedoe1')
@@ -30,9 +33,16 @@ class EditProfileViewTest(TestCase):
             'experience_level' : 'BEGINNER',
         }
 
+    """
+    Asserts that it is the correct URL
+    """
     def test_edit_profile_url(self):
         self.assertEqual(self.url, '/edit_profile/')
 
+    """
+    Tests whether the get request returns a 200 OK response
+    and that the returned form is an instance of UserForm
+    """
     def test_get_edit_profile(self):
         self.client.login(username=self.user.username, password='Password123')
         response = self.client.get(self.url)
@@ -42,6 +52,12 @@ class EditProfileViewTest(TestCase):
         self.assertTrue(isinstance(form, UserForm))
         self.assertEqual(form.instance, self.user)
 
+    """
+    Passes in an invalid user name and tests that the
+    view should not save the form
+    The users profile data should be the same as before
+    The total user count must remain the same as before
+    """
     def test_unsuccessful_edit_profile(self):
         self.client.login(username=self.user.username, password='Password123')
         before_count = User.objects.count()
@@ -62,6 +78,11 @@ class EditProfileViewTest(TestCase):
         self.assertEqual(self.user.email, 'janedoe@example.org')
         self.assertEqual(self.user.bio, 'Hello I am Jane')
 
+    """
+    Tests a successful profile edit by passing in valid data
+    And checking to see if it has been validated and saved correctly
+    The total user count must remain the same as before
+    """
     def test_successful_edit_profile(self):
         self.client.login(username=self.user.username, password='Password123')
         before_count = User.objects.count()
