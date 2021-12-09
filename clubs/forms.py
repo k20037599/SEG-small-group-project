@@ -2,12 +2,22 @@ from django import forms
 from .models import User
 from django.core.validators import RegexValidator
 
+"""
+Takes in user input to log the user in
+The password is not checked for password contraints
+because we are just logging in
+"""
 class LogInForm(forms.Form):
     username = forms.CharField(label="Username")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
+"""
+This Form Updates the users profile
+This form can update all info about the user
+except the password
+"""
 class UserForm(forms.ModelForm):
-    """This Form Updates the users profile"""
+
 
     class Meta:
         model = User
@@ -16,7 +26,11 @@ class UserForm(forms.ModelForm):
                     'bio' : forms.Textarea(),
                     'experience_level': forms.Select(choices=User.experience_level_choices)}
 
-
+"""
+This Form provides means for the user
+to create an account and includes constraints for password.
+The User needs to enter password twice
+"""
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
@@ -42,6 +56,10 @@ class SignUpForm(forms.ModelForm):
     password_confirm = forms.CharField(
         label="Password Confirm", widget=forms.PasswordInput(), max_length=50)
 
+    """
+    Validates all inputs of the SignUpForm
+    and propagates any errors found
+    """
     def clean(self):
         super().clean()
         password = self.cleaned_data.get('password')
@@ -50,6 +68,10 @@ class SignUpForm(forms.ModelForm):
         if password != password_confirm:
             self.add_error('password_confirm', 'Confirmation doesnt match.')
 
+    """
+    Saves the form information into the user model
+    Only validated data is saved
+    """
     def save(self):
         super().save(commit=False)
         user = User.objects.create_user(
