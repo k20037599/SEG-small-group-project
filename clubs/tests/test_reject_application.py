@@ -20,20 +20,21 @@ class AcceptApplicationTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'profile.html')
 
-    def test_only_an_officer_can_reject_appliactions(self):
+    def test_only_an_officer_can_reject_applications(self):
         self.member = User.objects.get(username='billysmith1')
         self.url = reverse('reject_application', kwargs={'user_id': self.applicant.id})
         self.client.login(username=self.member.username, password='Password123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
 
-    def test_member_reject_an_applicant(self):
+    def test_successful_reject_application(self):
         self.client.login(username=self.officer.username, password='Password123')
         response = self.client.get(self.reject_url)
         self.assertEqual(self.applicant.application_status, "PENDING")
         self.assertEqual(self.applicant.user_type, "APPLICANT")
         self.officer.reject_application(self.applicant)
         self.assertEqual(self.applicant.application_status, "REJECTED")
+        self.assertEqual(self.applicant.user_type, "APPLICANT")
 
     def test_get_profile_with_invalid_id(self):
         self.client.login(username=self.officer.username, password='Password123')

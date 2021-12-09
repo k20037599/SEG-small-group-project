@@ -27,8 +27,7 @@ class AcceptApplicationTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
 
-
-    def test_member_accept_an_applicant(self):
+    def test_successful_accept_application(self):
         self.client.login(username=self.officer.username, password='Password123')
         response = self.client.get(self.accept_url)
         self.assertEqual(self.applicant.application_status, "PENDING")
