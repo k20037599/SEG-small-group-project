@@ -28,7 +28,7 @@ class ViewApplicationsViewTestCase(TestCase):
             user_url = reverse('show_user', kwargs={'user_id': user.id})
             self.assertContains(response, user_url)
 
-    def test_get_member_view_pagination(self):
+    def test_get_applications_view_pagination(self):
         self.client.login(username=self.officer.username, password='Password123')
         self._create_test_applicants(settings.USERS_PER_PAGE*2+3-1)
         response = self.client.get(self.url)
