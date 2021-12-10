@@ -9,6 +9,8 @@ from django.template import Template, Context
 from .helpers import login_prohibited
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist, ImproperlyConfigured
+from django.core.paginator import Paginator
+from django.conf import settings
 
 @login_prohibited
 def home(request):
@@ -19,7 +21,7 @@ def view_applications(request):
     current_user = request.user
     if current_user.user_type == "OFFICER":
         users = User.objects.all().filter(user_type="APPLICANT")
-        return user_list(request, users)
+        return user_list(request, users, "Applicants")
     return redirect('/profile')
 
 @login_required
@@ -27,12 +29,15 @@ def view_members(request):
     current_user = request.user
     if current_user.user_type == "OFFICER":
         users = User.objects.all().filter(user_type="MEMBER")
-        return user_list(request, users)
+        return user_list(request, users, "Members")
     return redirect('/profile')
 
 @login_required
-def user_list(request, users):
-    return render(request, 'user_list.html', {'users': users})
+def user_list(request, users, user_type):
+    paginator = Paginator(users, settings.USERS_PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'user_list.html', {'users':page_obj, 'user_type':user_type})
 
 @login_required
 def show_user(request, user_id):

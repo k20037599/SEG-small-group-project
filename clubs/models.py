@@ -5,6 +5,9 @@ from django.core.validators import RegexValidator
 from django.core.validators import EmailValidator
 
 class User(AbstractUser):
+    class Meta:
+        ordering = ['username']
+        
     username = models.CharField(
         max_length=30,
         unique=True,

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'clubs',
     'widget_tweaks',
     'fontawesome_free',
+    'bootstrap_pagination',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,5 @@ MESSAGE_TAGS = {
     message_constants.DEBUG: 'dark',
     message_constants.ERROR: 'danger',
 }
+
+USERS_PER_PAGE = 10
