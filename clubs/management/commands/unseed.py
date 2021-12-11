@@ -6,4 +6,4 @@ class Command(BaseCommand):
         super().__init__()
 
     def handle(self, *args, **options):
-        User.objects.filter(is_staff = False).is_active = False
+        User.objects.filter(is_staff=False, is_superuser=False).delete()

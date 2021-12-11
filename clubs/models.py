@@ -1,49 +1,15 @@
+'''Models for clubs applcation'''
 from django.db import models
 from libgravatar import Gravatar
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.validators import EmailValidator
-#from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-# This is for making the email the username, but wasn't working properly
-
-# class UserManager(BaseUserManager):
-#     def create_user(self, first_name, last_name, email, experience_level, personal_statement, bio, password, is_active):
-#         email = self.normalize_email(email)
-#         user = self.model(
-#             first_name=first_name,
-#             last_name=last_name,
-#             email=email,
-#             experience_level=experience_level,
-#             personal_statement=personal_statement,
-#             bio=bio,
-#             is_active=is_active
-#             )
-#
-#         user.set_password(password)
-#         user.save(using=self._db)
-#
-#         return user
-#
-#     def create_superuser(self, first_name, last_name, email, experience_level, personal_statement, bio, password, is_active):
-#         """ Create a new superuser profile """
-#         user = self.model(
-#             first_name=first_name,
-#             last_name=last_name,
-#             email=email,
-#             experience_level=experience_level,
-#             personal_statement=personal_statement,
-#             bio=bio,
-#             is_active=is_active
-#             )
-#         user.is_superuser = True
-#
-#         user.save(using=self._db)
-#
-#         return user
-
-
+'''User model'''
 class User(AbstractUser):
+    class Meta:
+        ordering = ['username']
+        
     username = models.CharField(
         max_length=30,
         unique=True,
@@ -81,7 +47,6 @@ class User(AbstractUser):
         )]
     )
 
-    # had to change this to strings as it wasnt working with numbers
     experience_level_choices = (
         ('BEGINNER', 'Beginner'),
         ('INTERMEDIATE', 'Intermediate'),
@@ -97,10 +62,8 @@ class User(AbstractUser):
 
     user_type = models.CharField(max_length=20, default='APPLICANT')
 
-    # needed if we make the username=email
-    #objects = UserManager()
-    #USERNAME_FIELD = 'email'
-
+    application_status = models.CharField(max_length=20, default='PENDING')
+    
     def gravatar(self, size=120):
         """Return a URL to the user's gravatar."""
         gravatar_object = Gravatar(self.email)
@@ -110,6 +73,7 @@ class User(AbstractUser):
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
+
 
     def demote_officer(self, user):
         user.user_type = 'MEMBER'
@@ -124,3 +88,13 @@ class User(AbstractUser):
         user.save()
         self.user_type = 'OFFICER'
         self.save()
+        
+    def accept_application(self, user):
+        user.user_type = 'MEMBER'
+        user.application_status = 'ACCEPTED'
+        user.save()
+
+    def reject_application(self, user):
+        user.application_status = 'REJECTED'
+        user.save()
+

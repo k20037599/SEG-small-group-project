@@ -1,19 +1,20 @@
-{% extends 'base_content.html' %} {% block content %}
-<h1>User List</h1>
-<table class="table">
-  {% for u in users %} {% if u.username != "admin" %}
-  <tr>
-    <td>
-      <img
-        src="{{ user.mini_gravatar }}"
-        alt="Gravatar of {{ user.username }}"
-        class="rounded-circle"
-      />
-    </td>
-    <td></td>
-    <td>{{ u.full_name }}</td>
-    <td><a href="{% url 'show_user' u.id %}">{{ u.username }}</a></td>
-  </tr>
-  {% endif %} {% endfor %}
-</table>
+{% extends 'base_content.html' %}
+{% load bootstrap_pagination %}
+{% block content %}
+    <h1>{{ user_type }}</h1>
+    {% bootstrap_paginate users range=10 %}
+    <table class="table">
+    {% for u in users %}
+      {% if u.username != "admin" %}
+      <tr>
+        <td>
+          <img src="{{ user.mini_gravatar }}" alt="Gravatar of {{ user.username }}" class="rounded-circle" >
+        </td>
+        <td>
+          <td>{{ u.full_name }}</td>
+          <td><a href="{% url 'show_user' u.id %}">{{ u.username }}</a></td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+    </table>
 {% endblock %}

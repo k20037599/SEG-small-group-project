@@ -6,6 +6,9 @@ class UnitTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json', 'clubs/tests/fixtures/other_users.json']
     def setUp(self):
         self.test_user = User.objects.get(username='johndoe1')
+        self.member = User.objects.get(username='janedoe1')
+        self.officer = User.objects.get(username='bobsmith1')
+        self.owner = User.objects.get(username='jillbrown1')
 
     def test_valid_user(self):
         self._assert_user_is_valid()
@@ -170,6 +173,12 @@ class UnitTestCase(TestCase):
         self.test_user.personal_statement = "x"*502
 
         self._assert_user_is_invalid()
+
+    def test_default_application_status(self):
+        self.assertEqual(self.test_user.application_status, "PENDING")
+        self.assertEqual(self.member.application_status, "PENDING")
+        self.assertEqual(self.officer.application_status, "PENDING")
+        self.assertEqual(self.owner.application_status, "PENDING")
 
     def _assert_user_is_valid(self):
         try:

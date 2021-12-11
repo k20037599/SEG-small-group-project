@@ -5,6 +5,11 @@ from clubs.tests.helpers import reverse_with_next
 
 class ShowUserViewTestCase(TransactionTestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json', 'clubs/tests/fixtures/other_users.json']
+
+    """
+    Auxillary set up method which gets an Officer, Applicant and a member
+    retrieves the urls for these users
+    """
     def setUp(self):
         self.applicant = User.objects.get(username='johndoe1')
         self.member = User.objects.get(username='janedoe1')
@@ -13,11 +18,17 @@ class ShowUserViewTestCase(TransactionTestCase):
         self.member_url = reverse('show_user', kwargs={'user_id': self.member.id})
         self.officer_url = reverse('show_user', kwargs={'user_id': self.officer.id})
 
+    """
+    Tests whether these urls display correctly
+    """
     def test_show_user_url(self):
         self.assertEqual(self.applicant_url,f'/show_user/{self.applicant.id}')
         self.assertEqual(self.member_url,f'/show_user/{self.member.id}')
         self.assertEqual(self.officer_url,f'/show_user/{self.officer.id}')
 
+    """
+    Tests whether a user can be rerieved using their id
+    """
     def test_get_profile_with_own_id(self):
         self.client.login(username=self.officer.username, password='Password123')
         url = reverse('show_user', kwargs={'user_id': self.officer.id})
@@ -29,6 +40,10 @@ class ShowUserViewTestCase(TransactionTestCase):
         all_info = response.context['all_info']
         self.assertFalse(all_info)
 
+    """
+    Ensures that officer can retrieve an applicant
+    and view all their data
+    """
     def test_officer_get_applicant_profile(self):
         self.client.login(username=self.officer.username, password='Password123')
         url = reverse('show_user', kwargs={'user_id': self.applicant.id})
@@ -43,6 +58,10 @@ class ShowUserViewTestCase(TransactionTestCase):
         all_info = response.context['all_info']
         self.assertTrue(all_info)
 
+    """
+    Ensures that officer can retrieve an member
+    and view all their data
+    """
     def test_officer_get_member_profile(self):
         self.client.login(username=self.officer.username, password='Password123')
         url = reverse('show_user', kwargs={'user_id': self.member.id})

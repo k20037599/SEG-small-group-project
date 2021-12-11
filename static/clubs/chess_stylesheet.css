@@ -123,6 +123,28 @@ h3.profile-title {
   justify-content: center;
 }
 
+/*
+ * pagination
+ */
+
+ .pagination > li > a{
+   color: #000000;
+ }
+
+ .pagination > li > a:focus,
+ .pagination > li > a:hover,
+ .pagination > li > span:focus,
+ .pagination > li > span:hover{
+   background-color: #01304c;
+   color: #FFFFFF;
+   border-color: #01304c;
+ }
+
+ .pagination .page-item.active .page-link{
+   background-color: #01304c;
+   color: #FFFFFF;
+   border-color: #01304c;
+ }
 
 /*
  * Hyperlinks
