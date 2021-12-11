@@ -4,6 +4,7 @@ from libgravatar import Gravatar
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.validators import EmailValidator
+
 '''User model'''
 class User(AbstractUser):
     class Meta:
@@ -14,7 +15,7 @@ class User(AbstractUser):
         unique=True,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^\w{3,}$' ,
+            regex=r'^\w{3,}$',
             message="Username must contain at least 3 letters or numbers"
         )]
     )
@@ -23,7 +24,7 @@ class User(AbstractUser):
         max_length=50,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[a-zA-Z]{3,}$' ,
+            regex=r'^[a-zA-Z]{3,}$',
             message="First name must contain at least 3 letters"
         )]
     )
@@ -32,7 +33,7 @@ class User(AbstractUser):
         max_length=50,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[a-zA-Z]{3,}$' ,
+            regex=r'^[a-zA-Z]{3,}$',
             message="Last name must contain at least 3 letters"
         )]
     )
@@ -52,7 +53,8 @@ class User(AbstractUser):
         ('ADVANCED', 'Advanced'),
     )
 
-    experience_level = models.CharField(max_length=20, choices=experience_level_choices, default='BEGINNER')
+    experience_level = models.CharField(
+        max_length=20, choices=experience_level_choices, default='BEGINNER')
 
     personal_statement = models.CharField(max_length=500, blank=True)
 
@@ -61,7 +63,7 @@ class User(AbstractUser):
     user_type = models.CharField(max_length=20, default='APPLICANT')
 
     application_status = models.CharField(max_length=20, default='PENDING')
-
+    
     def gravatar(self, size=120):
         """Return a URL to the user's gravatar."""
         gravatar_object = Gravatar(self.email)
@@ -72,6 +74,21 @@ class User(AbstractUser):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
 
+
+    def demote_officer(self, user):
+        user.user_type = 'MEMBER'
+        user.save()
+
+    def promote_member(self, user):
+        user.user_type = 'OFFICER'
+        user.save()
+
+    def transfer_ownership(self, user):
+        user.user_type = 'OWNER'
+        user.save()
+        self.user_type = 'OFFICER'
+        self.save()
+        
     def accept_application(self, user):
         user.user_type = 'MEMBER'
         user.application_status = 'ACCEPTED'
@@ -80,3 +97,4 @@ class User(AbstractUser):
     def reject_application(self, user):
         user.application_status = 'REJECTED'
         user.save()
+

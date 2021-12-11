@@ -1,19 +1,51 @@
-{% extends 'base_content.html' %}
-{% block content %}
+{% extends 'base_content.html' %} {% block content %}
 <div class="profile-row-content">
   <div class="col-12">
     <div class="profile-picture">
-      <img src="{{ profile_user.gravatar }}" alt="Gravatar of {{ profile_user.username }}" class="rounded-circle profile-image">
+      <img
+        src="{{ profile_user.gravatar }}"
+        alt="Gravatar of {{ profile_user.username }}"
+        class="rounded-circle profile-image"
+      />
     </div>
     <div class="profile-text">
-      <h3 class="profile-name">{{profile_user.first_name}} {{profile_user.last_name}}</h3>
+      <h3 class="profile-name">
+        {{profile_user.first_name}} {{profile_user.last_name}}
+      </h3>
       <p class="profile-username">Username: {{ profile_user.username }}</p>
       {% if all_info %}
-        <p class="profile-email">Email: {{ profile_user.email }}</p>
-        <p class="profile-personal-statement">Personal Statement: {{ profile_user.personal_statement }}</p>
-        <p class="profile-experience-level">Experience Level: {{ profile_user.experience_level }}</p>
+      <p class="profile-email">Email: {{ profile_user.email }}</p>
+      <p class="profile-personal-statement">
+        Personal Statement: {{ profile_user.personal_statement }}
+      </p>
+      <p class="profile-experience-level">
+        Experience Level: {{ profile_user.experience_level }}
+      </p>
       {% endif %}
       <p class="profile-bio">Bio: {{profile_user.bio }}</p>
+
+      {% if user.user_type == "APPLICANT" %}
+      <p>Application Status: In Progress</p>
+      {% endif %}
+
+      {% if user.user_type == "OWNER" %}
+        {% if profile_user.user_type == "OFFICER" %}
+        <p>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <a class="btn btn-primary" href="{% url 'demote_officer' profile_user.id %}">Demote to Member</a>
+            <a class="btn btn-primary" href="{% url 'transfer_ownership' profile_user.id %}" onclick= "return confirm('This action cannot be undone. Do you want to continue?')">Transfer Ownership</a>
+          </div>
+        </p>
+        {% endif %}
+
+        {% if profile_user.user_type == "MEMBER" %}
+        <p>
+          <div class="d-grid col-6 mx-auto">
+            <a class="btn btn-primary" href="{% url 'promote_member' profile_user.id %}">Promote to Officer</a>
+          </div>
+        </p>
+        {% endif %}
+
       {% if profile_user.user_type == "APPLICANT" %}
         <p> Application Status: {{ profile_user.application_status }}</p>
       {% endif %}
@@ -22,6 +54,7 @@
       {% if user.user_type == "OFFICER" and profile_user.user_type == "APPLICANT" and profile_user.application_status != "REJECTED" %}
         <a class="btn btn-secondary" href="{% url 'accept_application' profile_user.id %}">Accept application</a>
         <a class="btn btn-secondary" href="{% url 'reject_application' profile_user.id %}">Reject application</a>
+
       {% endif %}
     </div>
   </div>

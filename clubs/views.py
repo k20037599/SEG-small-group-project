@@ -31,6 +31,14 @@ def view_applications(request):
         return user_list(request, users, "Applicants")
     return redirect('/profile')
 
+@login_required
+def view_officers(request):
+    current_user = request.user
+    if current_user.user_type == "OWNER":
+        users = User.objects.all().filter(user_type="OFFICER")
+        return user_list(request, users)
+    return redirect('/profile')
+
 """
 If the current user is an officer
 Then the officer can view a list of members
@@ -38,7 +46,7 @@ Then the officer can view a list of members
 @login_required
 def view_members(request):
     current_user = request.user
-    if current_user.user_type == "OFFICER":
+    if (current_user.user_type == "MEMBER" or current_user.user_type == "OFFICER" or current_user.user_type == "OWNER"):
         users = User.objects.all().filter(user_type="MEMBER")
         return user_list(request, users, "Members")
     return redirect('/profile')
@@ -64,6 +72,8 @@ def show_user(request, user_id):
         user = User.objects.get(id=user_id)
         if (user.user_type == "APPLICANT" or user.user_type == "MEMBER") and current_user.user_type == "OFFICER":
             all_info = True
+        if (user.user_type == "OFFICER" or user.user_type == "MEMBER") and current_user.user_type == "OWNER":
+            all_info = True
     except User.DoesNotExist:
         return redirect('profile')
     return render(request, 'profile.html', {'profile_user': user, 'all_info': all_info, 'application_status':current_user.application_status})
@@ -76,6 +86,7 @@ def profile(request):
     application_status = request.user.application_status
     return render(request, 'profile.html', {'profile_user': request.user, 'all_info': False, 'application_status': application_status})
 
+
 """
 A view to edit the current users profile
 Contains a user form, and if the form data is valid then the form can be saved
@@ -87,7 +98,8 @@ def edit_profile(request):
     if (request.method == 'POST'):
         form = UserForm(instance=current_user, data=request.POST)
         if form.is_valid():
-            messages.add_message(request, messages.SUCCESS, "Profile Successfully updated!")
+            messages.add_message(request, messages.SUCCESS,
+                                 "Profile Successfully updated!")
             form.save()
             return redirect('/profile')
     else:
@@ -113,7 +125,7 @@ def password(request):
 
     form = PasswordForm()
     return render(request, 'password.html', {'form':form})
-
+  
 @login_prohibited
 def sign_up(request):
     if request.method == 'POST':
@@ -149,8 +161,45 @@ def log_in(request):
                              "The credentials provided were invalid!")
     form = LogInForm()
     if request.method == 'GET':
-         next = request.GET.get('next') or ''
-    return render(request, 'log_in.html', {'form': form, 'next':next})
+        next = request.GET.get('next') or ''
+    return render(request, 'log_in.html', {'form': form, 'next': next})
+
+
+def demote_officer(request, user_id):
+    current_user = request.user
+    try:
+        user = User.objects.get(id=user_id)
+        if (user.user_type == "OFFICER") and current_user.user_type == "OWNER":
+            current_user.demote_officer(user)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
+
+def promote_member(request, user_id):
+    current_user = request.user
+    try:
+        user = User.objects.get(id=user_id)
+        if (user.user_type == "MEMBER") and (current_user.user_type == "OWNER"):
+            current_user.promote_member(user)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
+
+def transfer_ownership(request, user_id):
+    current_user = request.user
+    try:
+        user = User.objects.get(id=user_id)
+        if (user.user_type == "OFFICER") and current_user.user_type == "OWNER":
+            current_user.transfer_ownership(user)
+            return show_user(request, user_id)
+    except User.DoesNotExist:
+        return redirect('profile')
+    return redirect('profile')
+
 
 @login_required
 def accept_application(request, user_id):
