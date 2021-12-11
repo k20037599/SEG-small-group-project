@@ -1,9 +1,10 @@
+'''Models for clubs applcation'''
 from django.db import models
 from libgravatar import Gravatar
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.core.validators import EmailValidator
-
+'''User model'''
 class User(AbstractUser):
     username = models.CharField(
         max_length=30,
@@ -42,7 +43,6 @@ class User(AbstractUser):
         )]
     )
 
-    ##had to change this to strings as it wasnt working with numbers
     experience_level_choices = (
         ('BEGINNER', 'Beginner'),
         ('INTERMEDIATE', 'Intermediate'),
