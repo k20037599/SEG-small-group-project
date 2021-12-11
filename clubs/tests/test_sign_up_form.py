@@ -6,6 +6,10 @@ from django import forms
 from django.contrib.auth.hashers import check_password
 
 class SignUpFormTestCase(TestCase):
+    """
+    An Auxillary set up method that contains valid form input data
+    correspnding to a user
+    """
     def setUp(self):
         self.form_input = {
             'first_name': 'Jane',
@@ -19,11 +23,18 @@ class SignUpFormTestCase(TestCase):
             'bio':'hi i am jane'
         }
 
+    """
+    Passes in input data and then asserts that it is valid
+    """
     def test_valid_sign_up_form(self):
         form=SignUpForm(data=self.form_input)
 
         self.assertTrue(form.is_valid())
 
+    """
+    Checks all the necessary fields of the form
+    and checks that the password field uses a password widget
+    """
     def test_form_has_right_fields(self):
         form = SignUpForm()
 
@@ -42,6 +53,7 @@ class SignUpFormTestCase(TestCase):
         self.assertIn('bio', form.fields)
         self.assertIn('personal_statement', form.fields)
         self.assertIn('experience_level', form.fields)
+
 
     def test_password_contains_uppercase(self):
         self.form_input['password'] = "password123"
@@ -64,12 +76,21 @@ class SignUpFormTestCase(TestCase):
 
         self.assertFalse(form.is_valid())
 
+    """
+    Passes in unmatching password_confirm data to password_confirm field
+    and then asserts it to be invalid
+    """
     def test_password_and_password_confirm_are_identical(self):
         self.form_input['password_confirm'] = "Wrongpassword123"
         form=SignUpForm(data=self.form_input)
 
         self.assertFalse(form.is_valid())
 
+    """
+    Tests whether the user data is being saved correctly, by ensuring
+    that the user count increases by 1
+    and all the updated data matches the entered data
+    """
     def test_form_saves_correctly(self):
         before_count = User.objects.count()
         form=SignUpForm(data=self.form_input)
