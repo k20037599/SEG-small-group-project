@@ -4,8 +4,9 @@ from clubs.forms import SignUpForm
 from django.urls import reverse
 from clubs.models import User
 from django.contrib.auth.hashers import check_password
+from clubs.tests.helpers import LogInTester
 
-class SignUpViewTestCase(TestCase):
+class SignUpViewTestCase(TestCase, LogInTester):
     fixtures = ['clubs/tests/fixtures/default_user.json']
 
     """
@@ -48,9 +49,9 @@ class SignUpViewTestCase(TestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertFalse(form.is_bound)
-        
+
     def test_unsuccesful_sign_up(self):
-        self.form_input['username'] = "bad_username"
+        self.form_input['username'] = " "
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input)
         after_count = User.objects.count()

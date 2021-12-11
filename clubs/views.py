@@ -36,7 +36,7 @@ def view_officers(request):
     current_user = request.user
     if current_user.user_type == "OWNER":
         users = User.objects.all().filter(user_type="OFFICER")
-        return user_list(request, users)
+        return user_list(request, users, "Officers")
     return redirect('/profile')
 
 """
@@ -125,7 +125,7 @@ def password(request):
 
     form = PasswordForm()
     return render(request, 'password.html', {'form':form})
-  
+
 @login_prohibited
 def sign_up(request):
     if request.method == 'POST':

@@ -4,7 +4,7 @@ from clubs.models import User
 from django.urls import reverse
 from django.contrib.auth import authenticate
 from clubs.tests.helpers import reverse_with_next
-
+from django.conf import settings
 
 class ViewMembersViewTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json',
@@ -13,18 +13,19 @@ class ViewMembersViewTestCase(TestCase):
     def setUp(self):
         self.url = reverse('view_officers')
         self.officer = User.objects.get(username='bobsmith1')
+        self.owner = User.objects.get(username='jillbrown1')
 
     def test_view_officers_url(self):
         self.assertEqual(self.url, '/view_officers/')
 
     def test_get_view_officers_by_owner(self):
         self.client.login(username=self.owner.username, password='Password123')
-        self._create_test_officers(15-2)
+        self._create_test_officers(settings.USERS_PER_PAGE-1)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user_list.html')
-        self.assertEqual(len(response.context['users']), 15)
-        for user_id in range(15-2):
+        self.assertEqual(len(response.context['users']), settings.USERS_PER_PAGE)
+        for user_id in range(settings.USERS_PER_PAGE-1):
             self.assertContains(response, f'user{user_id}')
             user = User.objects.get(username=f'user{user_id}')
             user_url = reverse('show_user', kwargs={'user_id': user.id})

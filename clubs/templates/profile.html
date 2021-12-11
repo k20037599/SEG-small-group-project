@@ -1,12 +1,9 @@
-{% extends 'base_content.html' %} {% block content %}
+{% extends 'base_content.html' %}
+{% block content %}
 <div class="profile-row-content">
   <div class="col-12">
     <div class="profile-picture">
-      <img
-        src="{{ profile_user.gravatar }}"
-        alt="Gravatar of {{ profile_user.username }}"
-        class="rounded-circle profile-image"
-      />
+      <img src="{{ profile_user.gravatar }}"  alt="Gravatar of {{ profile_user.username }}" class="rounded-circle profile-image"/>
     </div>
     <div class="profile-text">
       <h3 class="profile-name">
@@ -55,6 +52,7 @@
         <a class="btn btn-secondary" href="{% url 'accept_application' profile_user.id %}">Accept application</a>
         <a class="btn btn-secondary" href="{% url 'reject_application' profile_user.id %}">Reject application</a>
 
+      {% endif %}
       {% endif %}
     </div>
   </div>
