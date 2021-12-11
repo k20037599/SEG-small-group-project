@@ -50,6 +50,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertFalse(form.is_bound)
 
+
     def test_unsuccesful_sign_up(self):
         self.form_input['username'] = " "
         before_count = User.objects.count()
@@ -89,6 +90,10 @@ class SignUpViewTestCase(TestCase, LogInTester):
 
         self.assertTrue(self._is_logged_in())
 
+    """
+    Tests that the user is redirected to their profile when they are logged in
+    and try to access login
+    """
     def test_get_sign_up_redirects_when_logged_in(self):
         self.client.login(username=self.test_user.username, password="Password123")
         response = self.client.get(self.url, follow=True)

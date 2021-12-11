@@ -33,7 +33,10 @@ class ProfileViewTestCase(TransactionTestCase):
         self.assertContains(response, "John Doe")
         self.assertContains(response, "johndoe1")
 
-
+    """
+    Tests that the user is redirected to the login page then back to the profile page
+    when they try to access their profile when not logged in
+    """
     def test_profile_redirects_when_not_logged_in(self):
         response = self.client.get(self.url)
         redirect_url = reverse_with_next('log_in', self.url)

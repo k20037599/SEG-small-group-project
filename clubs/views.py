@@ -28,7 +28,7 @@ def view_applications(request):
     current_user = request.user
     if current_user.user_type == "OFFICER":
         users = User.objects.all().filter(user_type="APPLICANT")
-        return user_list(request, users, "Applicants")
+        return user_list(request, users, "APPLICANT")
     return redirect('/profile')
 
 @login_required
@@ -36,7 +36,7 @@ def view_officers(request):
     current_user = request.user
     if current_user.user_type == "OWNER":
         users = User.objects.all().filter(user_type="OFFICER")
-        return user_list(request, users, "Officers")
+        return user_list(request, users, "OFFCIER")
     return redirect('/profile')
 
 """
@@ -48,7 +48,7 @@ def view_members(request):
     current_user = request.user
     if (current_user.user_type == "MEMBER" or current_user.user_type == "OFFICER" or current_user.user_type == "OWNER"):
         users = User.objects.all().filter(user_type="MEMBER")
-        return user_list(request, users, "Members")
+        return user_list(request, users, "MEMBER")
     return redirect('/profile')
 
 """
@@ -76,15 +76,14 @@ def show_user(request, user_id):
             all_info = True
     except User.DoesNotExist:
         return redirect('profile')
-    return render(request, 'profile.html', {'profile_user': user, 'all_info': all_info, 'application_status':current_user.application_status})
+    return render(request, 'profile.html', {'profile_user': user, 'all_info': all_info})
 
 """
 Renders all the information of the request user's profile
 """
 @login_required
 def profile(request):
-    application_status = request.user.application_status
-    return render(request, 'profile.html', {'profile_user': request.user, 'all_info': False, 'application_status': application_status})
+    return render(request, 'profile.html', {'profile_user': request.user, 'all_info': False})
 
 
 """
@@ -164,7 +163,7 @@ def log_in(request):
         next = request.GET.get('next') or ''
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
-
+@login_required
 def demote_officer(request, user_id):
     current_user = request.user
     try:
@@ -176,7 +175,7 @@ def demote_officer(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
-
+@login_required
 def promote_member(request, user_id):
     current_user = request.user
     try:
@@ -188,7 +187,7 @@ def promote_member(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
-
+@login_required
 def transfer_ownership(request, user_id):
     current_user = request.user
     try:
@@ -199,7 +198,6 @@ def transfer_ownership(request, user_id):
     except User.DoesNotExist:
         return redirect('profile')
     return redirect('profile')
-
 
 @login_required
 def accept_application(request, user_id):

@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.contrib.auth import authenticate
 from clubs.tests.helpers import reverse_with_next
 
-
 class DemoteOfficerTestCase(TestCase):
     fixtures = ['clubs/tests/fixtures/default_user.json',
                 'clubs/tests/fixtures/other_users.json']

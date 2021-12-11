@@ -6,7 +6,6 @@ from clubs.models import User
 from clubs.tests.helpers import LogInTester, reverse_with_next
 from django.contrib import messages
 
-
 class LogInViewTestCase(TestCase, LogInTester):
     fixtures = ['clubs/tests/fixtures/default_user.json']
 
@@ -121,7 +120,10 @@ class LogInViewTestCase(TestCase, LogInTester):
 
         self.assertEqual(len(messages_list), 0)
 
-
+    """
+    Test that when there is input in the login form but the user is already logged in,
+    they are redirected back to their profile
+    """
     def test_post_get_login_redirects_when_logged_in(self):
         self.client.login(username=self.user.username, password="Password123")
         form_input = {'username':"wronguser", 'password':"wrongpass"}
@@ -131,7 +133,10 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "profile.html")
 
-
+    """
+    Test that when there is incorrect input in the login form but the user is already logged in,
+    they are redirected back to their profile
+    """
     def test_post_log_in_with_incorrect_credentials_and_redirect(self):
         redirect_url = reverse('profile')
         form_input = { 'username': 'johndoe1', 'password': 'WrongPassword123', 'next': redirect_url }

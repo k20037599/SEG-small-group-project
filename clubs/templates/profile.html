@@ -11,18 +11,18 @@
       </h3>
       <p class="profile-username">Username: {{ profile_user.username }}</p>
       {% if all_info %}
-      <p class="profile-email">Email: {{ profile_user.email }}</p>
-      <p class="profile-personal-statement">
-        Personal Statement: {{ profile_user.personal_statement }}
-      </p>
-      <p class="profile-experience-level">
-        Experience Level: {{ profile_user.experience_level }}
-      </p>
+        <p class="profile-email">Email: {{ profile_user.email }}</p>
+        <p class="profile-personal-statement">
+          Personal Statement: {{ profile_user.personal_statement }}
+        </p>
+        <p class="profile-experience-level">
+          Experience Level: {{ profile_user.experience_level }}
+        </p>
       {% endif %}
       <p class="profile-bio">Bio: {{profile_user.bio }}</p>
 
       {% if user.user_type == "APPLICANT" %}
-      <p>Application Status: In Progress</p>
+        <p>Application Status: In Progress</p>
       {% endif %}
 
       {% if user.user_type == "OWNER" %}
@@ -34,7 +34,6 @@
           </div>
         </p>
         {% endif %}
-
         {% if profile_user.user_type == "MEMBER" %}
         <p>
           <div class="d-grid col-6 mx-auto">
@@ -42,6 +41,7 @@
           </div>
         </p>
         {% endif %}
+      {% endif %}
 
       {% if profile_user.user_type == "APPLICANT" %}
         <p> Application Status: {{ profile_user.application_status }}</p>
@@ -51,8 +51,6 @@
       {% if user.user_type == "OFFICER" and profile_user.user_type == "APPLICANT" and profile_user.application_status != "REJECTED" %}
         <a class="btn btn-secondary" href="{% url 'accept_application' profile_user.id %}">Accept application</a>
         <a class="btn btn-secondary" href="{% url 'reject_application' profile_user.id %}">Reject application</a>
-
-      {% endif %}
       {% endif %}
     </div>
   </div>
