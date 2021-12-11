@@ -7,3 +7,4 @@ libgravatar==1.00
 django-widget-tweaks==1.4.9
 fontawesome-free==5.15.4
 Faker==9.8.2
+django-bootstrap-pagination==1.7.1

@@ -1,6 +1,8 @@
 {% extends 'base_content.html' %}
+{% load bootstrap_pagination %}
 {% block content %}
-    <h1>User List</h1>
+    <h1>{{ user_type }}</h1>
+    {% bootstrap_paginate users range=10 %}
     <table class="table">
     {% for u in users %}
       {% if u.username != "admin" %}
