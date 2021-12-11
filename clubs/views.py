@@ -133,7 +133,7 @@ def promote_member(request, user_id):
     current_user = request.user
     try:
         user = User.objects.get(id=user_id)
-        if (user.user_type == "MEMBER") and current_user.user_type == "OWNER":
+        if (user.user_type == "MEMBER") and (current_user.user_type == "OWNER"):
             current_user.promote_member(user)
             return show_user(request, user_id)
     except User.DoesNotExist:
