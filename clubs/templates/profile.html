@@ -32,7 +32,7 @@
         <p>
           <div class="d-grid gap-2 col-6 mx-auto">
             <a class="btn btn-primary" href="{% url 'demote_officer' profile_user.id %}">Demote to Member</a>
-            <a class="btn btn-primary" href="{% url 'transfer_ownership' profile_user.id %}">Transfer Ownership</a>
+            <a class="btn btn-primary" href="{% url 'transfer_ownership' profile_user.id %}" onclick= "return confirm('This action cannot be undone. Do you want to continue?')">Transfer Ownership</a>
           </div>
         </p>
         {% endif %}
