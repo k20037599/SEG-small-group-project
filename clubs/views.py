@@ -28,7 +28,7 @@ def view_applications(request):
     current_user = request.user
     if current_user.user_type == "OFFICER":
         users = User.objects.all().filter(user_type="APPLICANT")
-        return user_list(request, users, "APPLICANT")
+        return user_list(request, users, "Applicants")
     return redirect('/profile')
 
 """
@@ -40,7 +40,7 @@ def view_officers(request):
     current_user = request.user
     if current_user.user_type == "OWNER":
         users = User.objects.all().filter(user_type="OFFICER")
-        return user_list(request, users, "OFFCIER")
+        return user_list(request, users, "Officers")
     return redirect('/profile')
 
 """
@@ -52,7 +52,7 @@ def view_members(request):
     current_user = request.user
     if (current_user.user_type == "MEMBER" or current_user.user_type == "OFFICER" or current_user.user_type == "OWNER"):
         users = User.objects.all().filter(user_type="MEMBER")
-        return user_list(request, users, "MEMBER")
+        return user_list(request, users, "Members")
     return redirect('/profile')
 
 """
@@ -74,7 +74,7 @@ def show_user(request, user_id):
     all_info = False
     try:
         user = User.objects.get(id=user_id)
-        #Decides whether the user will be able to see all 
+        #Decides whether the user will be able to see all information
         if (user.user_type == "APPLICANT" or user.user_type == "MEMBER") and current_user.user_type == "OFFICER":
             all_info = True
         if (user.user_type == "OFFICER" or user.user_type == "MEMBER") and current_user.user_type == "OWNER":
