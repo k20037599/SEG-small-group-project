@@ -1,1 +1,1 @@
-web:gunicorn clubs.wgsi
+web: gunicorn clubs.wsgi
