@@ -4,12 +4,12 @@
     <li class="nav-item">
       <a class="nav-link" href="{% url 'view_members' %}">Members</a>
     </li>
-    {% endif %} 
+    {% endif %}
     {% if user.user_type == "OFFICER" %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'view_applications' %}">Applications</a>
     </li>
-    {% endif %} 
+    {% endif %}
     {% if user.user_type == "OWNER" %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'view_officers' %}">Officers</a>
@@ -30,6 +30,9 @@
         aria-labelledby="user-account-dropdown">
         <li>
           <a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{% url 'password' %}">Edit Password</a>
         </li>
         <li><hr class="dropdown-divider"/></li>
         <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
