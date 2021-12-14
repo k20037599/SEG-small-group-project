@@ -31,6 +31,10 @@ def view_applications(request):
         return user_list(request, users, "APPLICANT")
     return redirect('/profile')
 
+"""
+If the current user is an owner
+then the owner can view a list of officers
+"""
 @login_required
 def view_officers(request):
     current_user = request.user
@@ -52,7 +56,7 @@ def view_members(request):
     return redirect('/profile')
 
 """
-A view containing a list of all users of the system
+A view containing a list of all given users
 """
 @login_required
 def user_list(request, users, user_type):
@@ -70,6 +74,7 @@ def show_user(request, user_id):
     all_info = False
     try:
         user = User.objects.get(id=user_id)
+        #Decides whether the user will be able to see all 
         if (user.user_type == "APPLICANT" or user.user_type == "MEMBER") and current_user.user_type == "OFFICER":
             all_info = True
         if (user.user_type == "OFFICER" or user.user_type == "MEMBER") and current_user.user_type == "OWNER":
