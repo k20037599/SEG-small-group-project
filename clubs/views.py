@@ -110,6 +110,11 @@ def edit_profile(request):
         form = UserForm(instance=current_user)
     return render(request, 'edit_profile.html', {'form': form})
 
+"""
+A view to edit the current users password
+Contains a password form, and if the form data is valid then the form can be saved
+and a success massage is displayed, the user is redirected to profile
+"""
 @login_required
 def password(request):
     current_user = request.user
@@ -130,6 +135,11 @@ def password(request):
     form = PasswordForm()
     return render(request, 'password.html', {'form':form})
 
+"""
+Allows a user to sign up by taking input from the sign up form.
+If the form is valid then create the user and login.
+If the form is invalid then display error message
+"""
 @login_prohibited
 def sign_up(request):
     if request.method == 'POST':
@@ -168,6 +178,12 @@ def log_in(request):
         next = request.GET.get('next') or ''
     return render(request, 'log_in.html', {'form': form, 'next': next})
 
+"""
+Allow an owner to demote an officer, changing their user type back
+to MEMBER.
+If the user they are trying to demote doesn't exist, the owner will be redirected to
+their profile.
+"""
 @login_required
 def demote_officer(request, user_id):
     current_user = request.user
@@ -180,6 +196,12 @@ def demote_officer(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
+"""
+Allow an owner to promote a member, changing their user type to
+to OFFICER.
+If the user they are trying to promote doesn't exist, the owner will be redirected to
+their profile.
+"""
 @login_required
 def promote_member(request, user_id):
     current_user = request.user
@@ -192,6 +214,11 @@ def promote_member(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
+"""
+Allow the owner to make an officer the owner and demote themselved.
+If the user they are trying to promote doesn't exist, the owner will be redirected to
+their profile.
+"""
 @login_required
 def transfer_ownership(request, user_id):
     current_user = request.user
@@ -204,6 +231,11 @@ def transfer_ownership(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
+"""
+Allow an officer to accept an application and change the user's
+status to ACCEPTED.
+If the conditions aren't met, redirect to the officer's profile.
+"""
 @login_required
 def accept_application(request, user_id):
     current_user = request.user
@@ -216,6 +248,11 @@ def accept_application(request, user_id):
         return redirect('profile')
     return redirect('profile')
 
+"""
+Allow an officer to reject an application and change the user's
+status to REJECTED.
+If the conditions aren't met, redirect to the officer's profile.
+"""
 @login_required
 def reject_application(request, user_id):
     current_user = request.user

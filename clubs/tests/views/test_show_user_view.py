@@ -76,6 +76,10 @@ class ShowUserViewTestCase(TransactionTestCase):
         all_info = response.context['all_info']
         self.assertTrue(all_info)
 
+    """
+    Tests that trying to view a user profile with an
+    invalid id is not allowed and the user is redirected
+    """
     def test_get_profile_with_invalid_id(self):
         self.client.login(username=self.applicant.username, password='Password123')
         url = reverse('show_user', kwargs={'user_id': self.applicant.id+9999})

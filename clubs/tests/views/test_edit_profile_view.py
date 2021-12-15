@@ -102,12 +102,14 @@ class EditProfileViewTest(TestCase):
         self.assertEqual(self.user.email, 'janedoe@example.org')
         self.assertEqual(self.user.bio, 'Hello I am Jane')
 
-    def test_get_profile_redirects_when_not_logged_in(self):
+    """Tests that trying to access edit profile form when not logged in redirects user"""
+    def test_get_edit_profile_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    def test_post_profile_redirects_when_not_logged_in(self):
+    """Tests that trying to post edit profile form when not logged in redirects user"""
+    def test_post_edit_profile_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

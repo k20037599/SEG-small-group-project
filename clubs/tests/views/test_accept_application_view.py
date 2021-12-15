@@ -34,6 +34,7 @@ class AcceptApplicationTestCase(TestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'profile.html')
 
+    """Tests that an officer can successfully accept an application"""
     def test_successful_accept_application(self):
         self.client.login(username=self.officer.username, password='Password123')
         response = self.client.get(self.accept_url)

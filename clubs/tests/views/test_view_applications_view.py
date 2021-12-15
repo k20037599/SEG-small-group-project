@@ -11,11 +11,12 @@ class ViewApplicationsViewTestCase(TestCase):
 
     """
     Gets the view_applications url
-    and retrieves a valid officer
+    and retrieves a valid officer and member
     """
     def setUp(self):
         self.url = reverse('view_applications')
         self.officer = User.objects.get(username='bobsmith1')
+        self.member = User.objects.get(username='janedoe1')
 
     """
     Tests that view_applications url is correct
@@ -27,7 +28,7 @@ class ViewApplicationsViewTestCase(TestCase):
     creates a list of applications and tests to ensure
     that each application contains relevant information
     """
-    def test_get_view_applications(self):
+    def test_view_applications(self):
         self.client.login(username=self.officer.username, password='Password123')
         self._create_test_applicants(settings.USERS_PER_PAGE-1)
         response = self.client.get(self.url)
@@ -40,6 +41,17 @@ class ViewApplicationsViewTestCase(TestCase):
             user_url = reverse('show_user', kwargs={'user_id': user.id})
             self.assertContains(response, user_url)
 
+    """
+    Ensures that unauthorised users (members) cannot see applicant list
+    """
+    def test_view_applications_by_unauthorised_user(self):
+        self.client.login(username=self.member.username, password='Password123')
+        response = self.client.get(self.url, follow=True)
+        response_url = reverse('profile')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'profile.html')
+
+    """Test that the list of applicants is correcttly displayed in pages"""
     def test_get_applications_view_pagination(self):
         self.client.login(username=self.officer.username, password='Password123')
         self._create_test_applicants(settings.USERS_PER_PAGE*2+3-1)
@@ -79,13 +91,14 @@ class ViewApplicationsViewTestCase(TestCase):
         self.assertTrue(page_obj.has_previous())
         self.assertFalse(page_obj.has_next())
 
+    """Test that the user is redirected when trying to view applicants when not logged in"""
     def test_get_view_applications_redirects_when_not_logged_in(self):
         response = self.client.get(self.url)
         redirect_url = reverse_with_next('log_in', self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     """
-    creates 10 test applicants
+    creates test applicants
     """
     def _create_test_applicants(self, user_count=10):
         for user_id in range(user_count):
