@@ -50,4 +50,4 @@ $ python3 manage.py test
 ## Sources
 The packages used by this application are specified in `requirements.txt`
 
-*Declare are other sources here.*
+A siginificant amount of code has been based upon the code for the 'clucker' application.
