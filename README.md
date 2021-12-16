@@ -7,13 +7,12 @@ The members of the team are:
 - Riya Chawla
 - Koizumi Do-oma
 - Hawra Al Alsaba
-*Add any further information about the team here, such as absent team members.*
 
 ## Project structure
 The project is called `system`.  It currently consists of a single app `clubs`.
 
 ## Deployed version of the application
-The deployed version of the application can be found at [URL](URL).
+The deployed version of the application can be found at https://immense-brook-18799.herokuapp.com/.
 
 ## Installation instructions
 To install the software and use it in your local development environment, you must first set up and activate a local development environment.  From the root of the project:
